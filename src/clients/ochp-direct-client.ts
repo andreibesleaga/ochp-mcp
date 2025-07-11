@@ -166,4 +166,41 @@ export class OCHPDirectClient {
       );
     });
   }
+
+  async addServiceEndpoints(
+    providerEndpoints?: any[],
+    operatorEndpoints?: any[]
+  ): Promise<{
+    result: DirectResult;
+  }> {
+    await this.initialize();
+    
+    return new Promise((resolve, reject) => {
+      this.client!.AddServiceEndpoints(
+        { providerEndpointArray: providerEndpoints, operatorEndpointArray: operatorEndpoints },
+        (err: any, result: any) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  }
+
+  async getServiceEndpoints(): Promise<{
+    result: DirectResult;
+    providerEndpointArray?: any[];
+    operatorEndpointArray?: any[];
+  }> {
+    await this.initialize();
+    
+    return new Promise((resolve, reject) => {
+      this.client!.GetServiceEndpoints(
+        {},
+        (err: any, result: any) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  }
 }

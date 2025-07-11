@@ -147,6 +147,17 @@ const toolSchemas = {
   ochp_direct_inform_provider: z.object({
     directId: z.string(),
   }),
+  ochp_update_tariffs: z.object({
+    tariffs: z.array(z.object({})),
+  }),
+  ochp_get_tariff_updates: z.object({
+    lastUpdate: z.string().datetime(),
+  }),
+  ochp_direct_add_service_endpoints: z.object({
+    providerEndpoints: z.array(z.object({})).optional(),
+    operatorEndpoints: z.array(z.object({})).optional(),
+  }),
+  ochp_direct_get_service_endpoints: z.object({}),
 };
 
 export function validateToolArguments(toolName: string, args: any): any {

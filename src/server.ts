@@ -14,6 +14,8 @@ import { AuthorizationHandler } from './handlers/authorization-handler.js';
 import { ChargePointHandler } from './handlers/charge-point-handler.js';
 import { CDRHandler } from './handlers/cdr-handler.js';
 import { StatusHandler } from './handlers/status-handler.js';
+import { TariffHandler } from './handlers/tariff-handler.js';
+import { EndpointHandler } from './handlers/endpoint-handler.js';
 import { OCHPConfig } from './config/ochp-config.js';
 import { validateToolArguments } from './utils/validation.js';
 
@@ -25,6 +27,8 @@ export class OCHPMCPServer {
   private chargePointHandler!: ChargePointHandler;
   private cdrHandler!: CDRHandler;
   private statusHandler!: StatusHandler;
+  private tariffHandler!: TariffHandler;
+  private endpointHandler!: EndpointHandler;
   private config: OCHPConfig;
 
   constructor() {
@@ -57,6 +61,8 @@ export class OCHPMCPServer {
     this.chargePointHandler = new ChargePointHandler(this.ochpClient);
     this.cdrHandler = new CDRHandler(this.ochpClient);
     this.statusHandler = new StatusHandler(this.ochpClient, this.ochpDirectClient);
+    this.tariffHandler = new TariffHandler(this.ochpClient);
+    this.endpointHandler = new EndpointHandler(this.ochpDirectClient);
   }
 
   private setupServerHandlers(): void {
@@ -440,6 +446,63 @@ export class OCHPMCPServer {
             required: ['directId'],
           },
         },
+        {
+          name: 'ochp_update_tariffs',
+          description: 'Update tariff information',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              tariffs: {
+                type: 'array',
+                items: { type: 'object' },
+                description: 'Tariff information array',
+              },
+            },
+            required: ['tariffs'],
+          },
+        },
+        {
+          name: 'ochp_get_tariff_updates',
+          description: 'Get tariff updates since last sync',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              lastUpdate: {
+                type: 'string',
+                format: 'date-time',
+                description: 'Last update timestamp',
+              },
+            },
+            required: ['lastUpdate'],
+          },
+        },
+        {
+          name: 'ochp_direct_add_service_endpoints',
+          description: 'Add service endpoint definitions',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              providerEndpoints: {
+                type: 'array',
+                items: { type: 'object' },
+                description: 'Provider endpoint definitions',
+              },
+              operatorEndpoints: {
+                type: 'array',
+                items: { type: 'object' },
+                description: 'Operator endpoint definitions',
+              },
+            },
+          },
+        },
+        {
+          name: 'ochp_direct_get_service_endpoints',
+          description: 'Get service endpoint definitions',
+          inputSchema: {
+            type: 'object',
+            properties: {},
+          },
+        },
       ],
     }));
 
@@ -535,6 +598,18 @@ export class OCHPMCPServer {
             return await this.chargePointHandler.updateChargePointList(validatedArgs);
           case 'ochp_get_charge_point_list_updates':
             return await this.chargePointHandler.getChargePointListUpdates(validatedArgs);
+
+          // Tariff tools
+          case 'ochp_update_tariffs':
+            return await this.tariffHandler.updateTariffs(validatedArgs);
+          case 'ochp_get_tariff_updates':
+            return await this.tariffHandler.getTariffUpdates(validatedArgs);
+
+          // Endpoint management tools
+          case 'ochp_direct_add_service_endpoints':
+            return await this.endpointHandler.addServiceEndpoints(validatedArgs);
+          case 'ochp_direct_get_service_endpoints':
+            return await this.endpointHandler.getServiceEndpoints();
 
           default:
             throw new Error(`Unknown tool: ${name}`);
@@ -650,8 +725,3 @@ export class OCHPMCPServer {
   }
 }
 
-// Start the server if this file is run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const server = new OCHPMCPServer();
-  server.run().catch(console.error);
-}

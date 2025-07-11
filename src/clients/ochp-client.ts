@@ -329,4 +329,39 @@ export class OCHPClient {
       );
     });
   }
+
+  async updateTariffs(tariffInfoArray: any[]): Promise<{
+    result: OCHPResult;
+    refusedTariffInfo?: any[];
+  }> {
+    await this.initialize();
+    
+    return new Promise((resolve, reject) => {
+      this.client!.UpdateTariffs(
+        { tariffInfoArray },
+        (err: any, result: any) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  }
+
+  async getTariffUpdates(lastUpdate: Date): Promise<{
+    result: OCHPResult;
+    tariffInfoArray: any[];
+    moreTariffsAvailable?: boolean;
+  }> {
+    await this.initialize();
+    
+    return new Promise((resolve, reject) => {
+      this.client!.GetTariffUpdates(
+        { lastUpdate: lastUpdate.toISOString() },
+        (err: any, result: any) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+  }
 }

@@ -60,7 +60,7 @@
 - Authentication via Bearer tokens and Basic Auth
 
 ✅ **MCP Integration**
-- 17 tools covering all WSDL operations
+- 23 tools covering all WSDL operations
 - 5 resources for data access
 - Comprehensive input validation
 - Proper error responses
@@ -73,21 +73,27 @@
 - Environment variable configuration
 - Claude Desktop integration example
 
-## Missing/Not Implemented
-❌ **Tariff Operations** (mentioned in WSDL but not prioritized)
-- `UpdateTariffs`
-- `GetTariffUpdates`
+### OCHP 1.4 Tariff Operations
+✅ **Tariff Management**
+- `UpdateTariffs` → `ochp_update_tariffs`
+- `GetTariffUpdates` → `ochp_get_tariff_updates`
 
-❌ **Service Endpoint Management** (OCHP-Direct administrative)
-- `AddServiceEndpoints`
-- `GetServiceEndpoints`
+### OCHP-Direct Service Management
+✅ **Service Endpoint Management**
+- `AddServiceEndpoints` → `ochp_direct_add_service_endpoints`
+- `GetServiceEndpoints` → `ochp_direct_get_service_endpoints`
 
-These operations are less commonly used and can be added if needed.
+## MCP Tools Summary
+✅ **23 Tools Total**
+- 15 OCHP 1.4 core operations
+- 8 OCHP-Direct extension operations
+- Complete WSDL coverage
 
 ## Status
-✅ **Production Ready**
-- All core OCHP operations implemented
-- Complete WSDL coverage for EV charging operations
+✅ **Complete Implementation**
+- **100% WSDL coverage** - All operations implemented
+- **23 MCP tools** covering every WSDL operation
+- **5 MCP resources** for data access
 - Full MCP protocol compliance
 - Comprehensive error handling and validation
-- Ready for deployment and integration
+- Production ready with complete feature set

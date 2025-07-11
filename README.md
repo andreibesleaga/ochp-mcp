@@ -212,4 +212,4 @@ npm run format   # Format code
 
 ## License
 
-MIT License
+Apache 2.0 License

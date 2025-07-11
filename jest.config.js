@@ -11,6 +11,9 @@ export default {
   transform: {
     '^.+\\.ts$': ['ts-jest', { useESM: true }]
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@modelcontextprotocol)/)',
+  ],
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.d.ts'
