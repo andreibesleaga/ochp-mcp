@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ochp": {
+      "command": "node",
+      "args": ["ochp-mcp/dist/server.js"],
+      "env": {
+        "OCHP_ENDPOINT": "https://your-ochp-endpoint.com/service/ochp/v1.4",
+        "OCHP_DIRECT_ENDPOINT": "https://your-ochp-endpoint.com/direct/ochp/v1.4",
+        "OCHP_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
