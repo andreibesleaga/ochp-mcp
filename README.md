@@ -1,2 +1,2 @@
 # ohcp-mcp-server
-OHCP MCP Server - AI MCP Server Implementation for EV Charging - Open Clearing House Protocol
+OHCP MCP Server - AI MCP Server Implementation for EV Charging - Open Clearing House Protocol - based on WSDL
